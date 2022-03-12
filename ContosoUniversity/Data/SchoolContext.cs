@@ -9,7 +9,6 @@ namespace ContosoUniversity.Data
 {
     public class SchoolContext : DbContext
     {
-        private readonly DbContext _context;
         public SchoolContext(DbContextOptions<SchoolContext> options) : base(options)
         {
         }
