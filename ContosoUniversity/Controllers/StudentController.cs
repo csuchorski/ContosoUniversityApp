@@ -1,4 +1,5 @@
 ﻿using ContosoUniversity.Data;
+using ContosoUniversity.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,12 +25,18 @@ namespace ContosoUniversity.Controllers
         {
             return View();
         }
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public Task<IActionResult> Create(Student student)
-        //{
-
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Student student)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(student);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(student);
+        }
 
         public IActionResult Edit(int? id)
         {
