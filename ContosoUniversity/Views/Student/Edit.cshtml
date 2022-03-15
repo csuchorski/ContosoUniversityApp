@@ -1,0 +1,24 @@
+﻿@model ContosoUniversity.Models.Student
+
+@{ViewData["Title"] = "Edit";}
+
+<div class="row">
+    <div class="border p-3">
+        <form method="post">
+            <input asp-for="Id" hidden />
+            <div class="form-group">
+                <label asp-for="FirstMidName"></label>
+                <input asp-for="FirstMidName"class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName"></label>
+                <input asp-for="LastName"class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="EnrollmentDate"></label>
+                <input type="date" asp-for="EnrollmentDate" class="form-control" />
+            </div>
+            <button class="btn btn-primary"type="submit">Confirm</button>
+        </form>
+    </div>
+</div>

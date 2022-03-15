@@ -45,6 +45,18 @@ namespace ContosoUniversity.Controllers
             if (obj == null) return NotFound();
             return View(obj);
         }
-        
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Student student)
+        {
+            if(ModelState.IsValid)
+            {
+                _context.Students.Update(student);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }     
+            return View();
+        }        
     }
 }
