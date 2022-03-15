@@ -57,6 +57,33 @@ namespace ContosoUniversity.Controllers
                 return RedirectToAction(nameof(Index));
             }     
             return View();
-        }        
+        }
+        
+        public IActionResult Delete(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            var obj = _context.Students.Find(id);
+
+            if(obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(Student student)
+        {
+            _context.Students.Remove(student);
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+        
     }
 }
