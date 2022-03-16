@@ -1,0 +1,40 @@
+﻿@model ContosoUniversity.Models.Student
+
+@{ ViewData["Title"] = "Details";}
+
+<div class="row">
+    <div class="border p-3">
+        <dl>
+            <dt>@Html.DisplayNameFor(model => model.FirstMidName)</dt>
+            <dd>@Html.DisplayFor(model => model.FirstMidName)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.LastName)</dt>
+            <dd>@Html.DisplayFor(model => model.LastName)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.EnrollmentDate)</dt>
+            <dd>@Html.DisplayFor(model => model.EnrollmentDate)</dd>
+        </dl>
+        @if (Model.Enrollments.Any())
+        {
+            <table class="table">
+                <tr>
+                    <th>Course Name</th>
+                    <th>Grade</th>
+                </tr>
+                @foreach (var enrollment in Model.Enrollments)
+                {
+                    <tr class="table-row">
+                        <td>@Html.DisplayFor(modelItem => enrollment.Course.Title)</td>
+                        <td>@Html.DisplayFor(modelItem => enrollment.Grade)</td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <p class="border-top pt-3"><b>Not enrolled in any courses</b></p>
+        }
+
+    </div>
+    <div></div>
+</div>

@@ -1,6 +1,7 @@
 ﻿using ContosoUniversity.Data;
 using ContosoUniversity.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,25 +51,25 @@ namespace ContosoUniversity.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Student student)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _context.Students.Update(student);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
-            }     
+            }
             return View();
         }
-        
+
         public IActionResult Delete(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var obj = _context.Students.Find(id);
 
-            if(obj == null)
+            if (obj == null)
             {
                 return NotFound();
             }
@@ -84,6 +85,15 @@ namespace ContosoUniversity.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-        
+
+        public IActionResult Details(int? id)
+        {
+            if (id == null) return NotFound();
+            var student = _context.Students.Include(s => s.Enrollments).ThenInclude(e => e.Course).AsNoTracking()
+        .FirstOrDefault(m => m.Id == id);
+            if (student == null) return NotFound();
+            return View(student);
+        }
+
     }
 }
