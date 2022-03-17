@@ -16,10 +16,27 @@ namespace ContosoUniversity.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public IActionResult Index(string sortOrder)
         {
-            var studentList = _context.Students.ToList();
-            return View(studentList);
+            ViewData["NameSortParam"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParam"] = sortOrder == "date_asc" ? "date_desc" : "date_asc";
+            var students = from s in _context.Students select s;
+            switch(sortOrder)
+            {
+                case "name_desc":
+                    students = students.OrderByDescending(s => s.LastName);
+                    break;
+                case "date_desc":
+                    students = students.OrderByDescending(s => s.EnrollmentDate);
+                    break;
+                case "date_asc":
+                    students = students.OrderBy(s => s.EnrollmentDate);
+                    break;
+                default:
+                    students = students.OrderBy(s => s.LastName);
+                    break;
+            }
+            return View(students.ToList());
         }
 
         public IActionResult Create()
@@ -28,7 +45,7 @@ namespace ContosoUniversity.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Student student)
+        public IActionResult Create([Bind("FirstMidName, LastName, EnrollmentDate")]Student student)
         {
             if (ModelState.IsValid)
             {
