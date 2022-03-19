@@ -5,6 +5,11 @@
 
 <a asp-action="Create" class="btn btn-info">Create New</a>
 
+<form asp-action="Index" method="get">
+    <input class="form-control" name="searchString" value="@ViewData["SearchParam"]" />
+    <input type="submit" value="Search" class="btn btn-secondary">
+</form>
+
 <table class="table">
     <thead>
         <tr>

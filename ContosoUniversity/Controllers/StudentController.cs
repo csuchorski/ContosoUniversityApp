@@ -16,12 +16,19 @@ namespace ContosoUniversity.Controllers
         {
             _context = context;
         }
-        public IActionResult Index(string sortOrder)
+        public IActionResult Index(string sortOrder, string searchString)
         {
             ViewData["NameSortParam"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["DateSortParam"] = sortOrder == "date_asc" ? "date_desc" : "date_asc";
+            ViewData["SearchParam"] = searchString;
+
             var students = from s in _context.Students select s;
-            switch(sortOrder)
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                students = students.Where(s => s.FirstMidName.Contains(searchString) || s.LastName.Contains(searchString));
+            }
+
+            switch (sortOrder)
             {
                 case "name_desc":
                     students = students.OrderByDescending(s => s.LastName);
