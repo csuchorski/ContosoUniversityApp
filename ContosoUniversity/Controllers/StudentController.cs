@@ -16,11 +16,21 @@ namespace ContosoUniversity.Controllers
         {
             _context = context;
         }
-        public IActionResult Index(string sortOrder, string searchString, int? pageIndex)
+        public IActionResult Index(string sortOrder, string searchString, string currentFilter, int? pageIndex)
         {
             ViewData["NameSortParam"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["DateSortParam"] = sortOrder == "date_asc" ? "date_desc" : "date_asc";
-            ViewData["SearchFilter"] = searchString;
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["CurrentFilter"] = searchString;
+
+            if(searchString!=null)
+            {
+                pageIndex = 1;
+            }
+            else
+            {
+                currentFilter = sortOrder;
+            }
 
             var students = from s in _context.Students select s;
             if (!String.IsNullOrEmpty(searchString))
@@ -43,7 +53,8 @@ namespace ContosoUniversity.Controllers
                     students = students.OrderBy(s => s.LastName);
                     break;
             }
-            return View(students.ToList());
+            int pageSize = 3;
+            return View(new PaginatedList<Student>(students, pageIndex ?? 1, pageSize));
         }
 
         public IActionResult Create()
