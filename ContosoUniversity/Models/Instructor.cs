@@ -12,9 +12,22 @@ namespace ContosoUniversity.Models
         [Key]
         public int ID { get; set; }
         [DisplayName("Last Name")]
+        [Required]
+        [StringLength(50)]
         public string LastName { get; set; }
+
         [DisplayName("First Name")]
+        [Required]
+        [StringLength(50)]
         public int FirstMidName { get; set; }
+        public string FullName
+        {
+            get { return $"{FirstMidName} {LastName}"; }
+        }
+
+        [DataType(DataType.Date)]
+        [DisplayName("Hire Date")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime HireTime { get; set; }
 
         public ICollection<CourseAssignment> CourseAssignments;

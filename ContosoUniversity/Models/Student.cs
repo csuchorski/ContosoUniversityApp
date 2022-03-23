@@ -19,8 +19,14 @@ namespace ContosoUniversity.Models
         [StringLength(50, MinimumLength = 1)]
         public string LastName { get; set; }
 
+        public string FullName 
+        {
+            get { return $"{FirstMidName} {LastName}"; }
+        }
+
         [DisplayName("Enrollment date")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime EnrollmentDate { get; set; }
 
         public ICollection<Enrollment> Enrollments { get; set; }
