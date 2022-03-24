@@ -13,9 +13,9 @@ namespace ContosoUniversity.Models
     public class Enrollment
     {
         [Key]
-        public int EnrollmentId { get; set; }
-        public int CourseId { get; set; }
-        public int StudentId { get; set; }
+        public int EnrollmentID { get; set; }
+        public int CourseID { get; set; }
+        public int StudentID { get; set; }
         [DisplayFormat(NullDisplayText = "No Grade")]
         public Grade? Grade { get; set; }
 

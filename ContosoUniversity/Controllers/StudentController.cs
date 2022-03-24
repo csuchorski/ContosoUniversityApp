@@ -125,7 +125,7 @@ namespace ContosoUniversity.Controllers
         {
             if (id == null) return NotFound();
             var student = _context.Students.Include(s => s.Enrollments).ThenInclude(e => e.Course).AsNoTracking()
-        .FirstOrDefault(m => m.Id == id);
+        .FirstOrDefault(m => m.ID == id);
             if (student == null) return NotFound();
             return View(student);
         }

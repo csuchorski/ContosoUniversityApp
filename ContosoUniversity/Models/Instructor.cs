@@ -19,7 +19,7 @@ namespace ContosoUniversity.Models
         [DisplayName("First Name")]
         [Required]
         [StringLength(50)]
-        public int FirstMidName { get; set; }
+        public string FirstMidName { get; set; }
         public string FullName
         {
             get { return $"{FirstMidName} {LastName}"; }

@@ -9,7 +9,7 @@ namespace ContosoUniversity.Models
 {
     public class Student
     {
-        public int Id { get; set; }
+        public int ID { get; set; }
 
         [DisplayName("First and middle name")]
         [StringLength(50, MinimumLength = 1)]
