@@ -121,13 +121,13 @@ namespace ContosoUniversity.Data
                 var officeAssignments = new OfficeAssignment[]
                 {
                     new OfficeAssignment {
-                        InstructorID = context.Instructors.Single( i => i.LastName == "Fakhouri").ID,
+                        Instructor = context.Instructors.Single( i => i.LastName == "Fakhouri"),
                         Location = "Smith 17" },
                     new OfficeAssignment {
-                        InstructorID = context.Instructors.Single( i => i.LastName == "Harui").ID,
+                        Instructor = context.Instructors.Single( i => i.LastName == "Harui"),
                         Location = "Gowan 27" },
                     new OfficeAssignment {
-                        InstructorID = context.Instructors.Single( i => i.LastName == "Kapoor").ID,
+                        Instructor = context.Instructors.Single( i => i.LastName == "Kapoor"),
                         Location = "Thompson 304" },
                 };
 
