@@ -11,15 +11,31 @@
     <thead>
         <tr>
             <th>
+                Course number
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Credits)
             </th>
+            <th>
+                Department
+            </th>
         </tr>
     </thead>
     <tbody>
-
+        @{
+            foreach(var course in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem=> course.CourseID)</td>
+                    <td>@Html.DisplayFor(modelItem => course.Title)</td>
+                    <td>@Html.DisplayFor(modelItem => course.Credits)</td>
+                    <td>@Html.DisplayFor(modelItem => course.Department.Name)</td>
+                </tr>
+            }
+        }
     </tbody>
 </table>
 

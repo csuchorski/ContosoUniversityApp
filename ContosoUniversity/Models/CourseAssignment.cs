@@ -10,7 +10,7 @@ namespace ContosoUniversity.Models
         public int CourseID { get; set; }
         public int InstructorID { get; set; }
 
-        public Course Course;
-        public Instructor Instructor;
+        public Course Course { get; set; }
+        public Instructor Instructor { get; set; }
     }
 }

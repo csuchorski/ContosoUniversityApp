@@ -30,7 +30,7 @@ namespace ContosoUniversity.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime HireTime { get; set; }
 
-        public ICollection<CourseAssignment> CourseAssignments;
-        public ICollection<OfficeAssignment> OfficeAssignments;
+        public ICollection<CourseAssignment> CourseAssignments { get; set; }
+        public ICollection<OfficeAssignment> OfficeAssignments { get; set; }
     }
 }
