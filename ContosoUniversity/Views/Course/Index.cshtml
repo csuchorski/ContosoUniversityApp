@@ -22,17 +22,25 @@
             <th>
                 Department
             </th>
+            <th>
+                Controls
+            </th>
         </tr>
     </thead>
     <tbody>
         @{
-            foreach(var course in Model)
+            foreach (var course in Model)
             {
                 <tr>
                     <td>@Html.DisplayFor(modelItem=> course.CourseID)</td>
                     <td>@Html.DisplayFor(modelItem => course.Title)</td>
                     <td>@Html.DisplayFor(modelItem => course.Credits)</td>
                     <td>@Html.DisplayFor(modelItem => course.Department.Name)</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-CourseID="@course.CourseID">Edit</a>|
+                        <a asp-action="Details" asp-route-CourseID="@course.CourseID">Details</a>|
+                        <a asp-action="Delete" asp-route-CourseID="@course.CourseID">Delete</a>
+                    </td>
                 </tr>
             }
         }
