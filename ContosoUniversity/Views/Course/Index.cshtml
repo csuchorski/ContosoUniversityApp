@@ -13,13 +13,16 @@
     <thead>
         <tr>
             <th>
+                Course number
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Credits)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Department)
+                @Html.DisplayNameFor(model => model.Department.Name)
             </th>
             <th></th>
         </tr>
@@ -27,6 +30,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseID)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>

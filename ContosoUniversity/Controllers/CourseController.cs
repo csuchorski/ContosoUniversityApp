@@ -22,8 +22,8 @@ namespace ContosoUniversity.Controllers
         // GET: Course
         public async Task<IActionResult> Index()
         {
-            var schoolContext = _context.Courses.Include(c => c.Department);
-            return View(await schoolContext.ToListAsync());
+            var courses = _context.Courses.Include(c => c.Department);
+            return View(await courses.ToListAsync());
         }
 
         // GET: Course/Details/5
