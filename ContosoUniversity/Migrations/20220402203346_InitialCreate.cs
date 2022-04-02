@@ -63,20 +63,18 @@ namespace ContosoUniversity.Migrations
                 name: "OfficeAssignment",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Location = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    InstructorID = table.Column<int>(type: "int", nullable: true)
+                    InstructorID = table.Column<int>(type: "int", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OfficeAssignment", x => x.ID);
+                    table.PrimaryKey("PK_OfficeAssignment", x => x.InstructorID);
                     table.ForeignKey(
                         name: "FK_OfficeAssignment_Instructor_InstructorID",
                         column: x => x.InstructorID,
                         principalTable: "Instructor",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -174,11 +172,6 @@ namespace ContosoUniversity.Migrations
                 name: "IX_Enrollment_StudentID",
                 table: "Enrollment",
                 column: "StudentID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OfficeAssignment_InstructorID",
-                table: "OfficeAssignment",
-                column: "InstructorID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

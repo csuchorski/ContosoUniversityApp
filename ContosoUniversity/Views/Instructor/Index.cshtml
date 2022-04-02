@@ -1,10 +1,10 @@
-﻿@model IEnumerable<ContosoUniversity.Models.Instructor>
+﻿@model ContosoUniversity.Models.SchoolViewModels.InstructorIndexData
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Instructors";
 }
 
-<h1>Index</h1>
+<h1>Instructors</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,35 +13,59 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                First name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FirstMidName)
+                Last name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HireTime)
+                Hire date
+            </th>
+            <th>
+                Offices
+            </th>
+            <th>
+                Courses
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstMidName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HireTime)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Instructors)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstMidName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HireTime)
+                </td>
+                <td>
+                    @if(item.OfficeAssignment!=null)
+                    {
+                        @Html.DisplayFor(modelItem => item.OfficeAssignment.Location)
+                    }
+                    else
+                    {
+                        <p style="color:grey">Not specified</p>
+                    }
+                </td>
+                <td>
+                    @foreach(var course in item.CourseAssignments)
+                    {
+                        @course.Course.CourseID @course.Course.Title <br/>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Index"asp-route-id="@item.ID">Select</a>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

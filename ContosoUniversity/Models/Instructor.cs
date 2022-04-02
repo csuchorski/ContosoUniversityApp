@@ -31,6 +31,6 @@ namespace ContosoUniversity.Models
         public DateTime HireTime { get; set; }
 
         public ICollection<CourseAssignment> CourseAssignments { get; set; }
-        public ICollection<OfficeAssignment> OfficeAssignments { get; set; }
+        public OfficeAssignment OfficeAssignment { get; set; }
     }
 }

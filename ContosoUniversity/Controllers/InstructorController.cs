@@ -25,7 +25,7 @@ namespace ContosoUniversity.Controllers
         {
             InstructorIndexData instructorViewModel = new InstructorIndexData();
                 instructorViewModel.Instructors = await _context.Instructors.
-                Include(m => m.OfficeAssignments).
+                Include(m => m.OfficeAssignment).
                 Include(m => m.CourseAssignments).
                     ThenInclude(m => m.Course).
                         ThenInclude(m => m.Enrollments).
@@ -84,7 +84,7 @@ namespace ContosoUniversity.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,LastName,FirstMidName,HireTime")] Instructor instructor)
+        public async Task<IActionResult> Create([Bind("LastName,FirstMidName,HireTime")] Instructor instructor)
         {
             if (ModelState.IsValid)
             {
