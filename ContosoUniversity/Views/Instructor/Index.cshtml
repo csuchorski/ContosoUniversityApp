@@ -57,7 +57,7 @@
                 <td>
                     @foreach (var course in item.CourseAssignments)
                     {
-                        @course.Course.CourseID @course.Course.Title <br />
+                        @course.Course.CourseID <span>|</span> @course.Course.Title <br />
                     }
                 </td>
                 <td>
@@ -72,40 +72,41 @@
 </table>
 
 
-    if (Model.Courses != null)
-    {
-        <table class="table">
-            <thead>
-                <th></th>
-                <th>Course number</th>
-                <th>Course name</th>
-                <th>Department name</th>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Courses)
-                {
-                    string SelectedRow = "";
-                    if (item.CourseID == (int?)ViewData["CourseID"])
-                    {
-                        SelectedRow = "success";
-                    }
-                    <tr class="@SelectedRow">
-                        <td>
-                            @Html.ActionLink("Select", "Index", new {CourseID = item.CourseID})
-                        </td>
-                        <td>
-                            @item.CourseID
-                        </td>
-                        <td>
-                            @item.Title
-                        </td>
-                        <td>
-                            @item.Department.Name
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+@if (Model.Courses != null)
+{
+    <table class="table">
+    <tr>
+        <th></th>
+        <th>Course number</th>
+        <th>Course name</th>
+        <th>Department name</th>
+    </tr>
 
-    }
+    <tbody>
+        @foreach (var item in Model.Courses)
+        {
+            string SelectedRow = "";
+            if (item.CourseID == (int?)ViewData["CourseID"])
+            {
+                SelectedRow = "success";
+            }
+            <tr class="@SelectedRow">
+                <td>
+                    @Html.ActionLink("Select", "Index", new {CourseID = item.CourseID})
+                </td>
+                <td>
+                    @item.CourseID
+                </td>
+                <td>
+                    @item.Title
+                </td>
+                <td>
+                    @item.Department.Name
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
 }
+
