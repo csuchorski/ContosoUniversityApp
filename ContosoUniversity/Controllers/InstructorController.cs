@@ -103,7 +103,8 @@ namespace ContosoUniversity.Controllers
                 return NotFound();
             }
 
-            var instructor = await _context.Instructors.FindAsync(id);
+            var instructor = await _context.Instructors.Include(m => m.OfficeAssignment).Include(m=>m.CourseAssignments).FirstOrDefaultAsync(m => m.ID == id);
+
             if (instructor == null)
             {
                 return NotFound();
@@ -116,7 +117,7 @@ namespace ContosoUniversity.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,LastName,FirstMidName,HireTime")] Instructor instructor)
+        public async Task<IActionResult> Edit(int id, [Bind("LastName,FirstMidName,HireTime")] Instructor instructor)
         {
             if (id != instructor.ID)
             {
