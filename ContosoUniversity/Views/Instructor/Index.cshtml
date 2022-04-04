@@ -75,38 +75,61 @@
 @if (Model.Courses != null)
 {
     <table class="table">
-    <tr>
-        <th></th>
-        <th>Course number</th>
-        <th>Course name</th>
-        <th>Department name</th>
-    </tr>
+        <tr>
+            <th></th>
+            <th>Course number</th>
+            <th>Course name</th>
+            <th>Department name</th>
+        </tr>
 
-    <tbody>
-        @foreach (var item in Model.Courses)
-        {
-            string SelectedRow = "";
-            if (item.CourseID == (int?)ViewData["CourseID"])
+        <tbody>
+            @foreach (var item in Model.Courses)
             {
-                SelectedRow = "success";
+                string SelectedRow = "";
+                if (item.CourseID == (int?)ViewData["CourseID"])
+                {
+                    SelectedRow = "success";
+                }
+                <tr class="@SelectedRow">
+                    <td>
+                        @Html.ActionLink("Select", "Index", new {CourseID = item.CourseID})
+                    </td>
+                    <td>
+                        @item.CourseID
+                    </td>
+                    <td>
+                        @item.Title
+                    </td>
+                    <td>
+                        @item.Department.Name
+                    </td>
+                </tr>
             }
-            <tr class="@SelectedRow">
-                <td>
-                    @Html.ActionLink("Select", "Index", new {CourseID = item.CourseID})
-                </td>
-                <td>
-                    @item.CourseID
-                </td>
-                <td>
-                    @item.Title
-                </td>
-                <td>
-                    @item.Department.Name
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+}
 
+@if (Model.Enrollments != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Student name</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model.Enrollments)
+            {
+                <tr>
+                    <td>@Html.ActionLink("Student details", "Details", "Student", new {ID = item.StudentID})</td>
+                    <td>@Html.DisplayFor(modelItem => item.Student.FullName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Grade)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 
