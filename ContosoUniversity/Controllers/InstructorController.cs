@@ -103,13 +103,35 @@ namespace ContosoUniversity.Controllers
                 return NotFound();
             }
 
-            var instructor = await _context.Instructors.Include(m => m.OfficeAssignment).Include(m=>m.CourseAssignments).FirstOrDefaultAsync(m => m.ID == id);
+            var instructor = await _context.Instructors.Include(m => m.OfficeAssignment).Include(m=>m.CourseAssignments).
+                ThenInclude(c=>c.Course).FirstOrDefaultAsync(m => m.ID == id);
 
             if (instructor == null)
             {
                 return NotFound();
             }
+            PopulateAssignedCourse(instructor);
+
             return View(instructor);
+        }
+
+        private void PopulateAssignedCourse(Instructor instructor)
+        {
+            var allCourses = _context.Courses;
+            var assignedCourses = new HashSet<int>(_context.CourseAssignments.Select(m => m.CourseID));
+
+            var viewModel = new List<AssignedCourseData>();
+
+            foreach(var course in allCourses)
+            {
+                viewModel.Add(new AssignedCourseData
+                {
+                    CourseID = course.CourseID,
+                    Title = course.Title,
+                    IsAssigned = assignedCourses.Contains(course.CourseID)
+                });
+            }
+            ViewData["Courses"] = viewModel;
         }
 
         // POST: Instructor/Edit/5

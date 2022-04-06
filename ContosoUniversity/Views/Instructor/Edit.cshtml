@@ -29,6 +29,18 @@
                 <span asp-validation-for="HireTime" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <ul>
+                    @foreach (var course in)
+                    {
+                        <li>
+                            <label>@course.Course.Title</label>
+                            <input type="checkbox">
+                        </li>
+                    }
+                </ul>
+
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -40,5 +52,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }
