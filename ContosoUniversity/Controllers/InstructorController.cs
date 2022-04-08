@@ -118,7 +118,7 @@ namespace ContosoUniversity.Controllers
         private void PopulateAssignedCourse(Instructor instructor)
         {
             var allCourses = _context.Courses;
-            var assignedCourses = new HashSet<int>(_context.CourseAssignments.Select(m => m.CourseID));
+            var assignedCourses = new HashSet<int>(_context.CourseAssignments.Where(s => s.InstructorID == instructor.ID).Select(m => m.CourseID));
 
             var viewModel = new List<AssignedCourseData>();
 

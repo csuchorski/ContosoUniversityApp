@@ -30,13 +30,19 @@
             </div>
             <div class="form-group">
                 <ul>
-                    @foreach (var course in)
-                    {
-                        <li>
-                            <label>@course.Course.Title</label>
-                            <input type="checkbox">
-                        </li>
+                    @{
+                        string isChecked;
+                        foreach (var course in ViewData["Courses"] as List<ContosoUniversity.Models.SchoolViewModels.AssignedCourseData>)
+                        {
+                            isChecked = "";
+                            if (course.IsAssigned == true) isChecked = "checked";
+                            <li>
+                                <label>@course.Title</label>
+                                <input type="checkbox" @isChecked>
+                            </li>
+                        }
                     }
+
                 </ul>
 
             </div>
