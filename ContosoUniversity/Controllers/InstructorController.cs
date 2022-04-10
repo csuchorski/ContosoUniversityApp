@@ -21,23 +21,23 @@ namespace ContosoUniversity.Controllers
         }
 
         // GET: Instructor
-        public async Task<IActionResult> Index(int ?id, int? courseID)
+        public async Task<IActionResult> Index(int? id, int? courseID)
         {
             InstructorIndexData instructorViewModel = new InstructorIndexData();
-                instructorViewModel.Instructors = await _context.Instructors.
-                Include(m => m.OfficeAssignment).
-                Include(m => m.CourseAssignments).
-                    ThenInclude(m => m.Course).
-                        ThenInclude(m => m.Enrollments).
-                            ThenInclude(m => m.Student).
-                Include(m => m.CourseAssignments).
-                    ThenInclude(m => m.Course).
-                        ThenInclude(m => m.Department).
-                AsNoTracking().
-                OrderBy(m=>m.LastName).
-                ToListAsync();
+            instructorViewModel.Instructors = await _context.Instructors.
+            Include(m => m.OfficeAssignment).
+            Include(m => m.CourseAssignments).
+                ThenInclude(m => m.Course).
+                    ThenInclude(m => m.Enrollments).
+                        ThenInclude(m => m.Student).
+            Include(m => m.CourseAssignments).
+                ThenInclude(m => m.Course).
+                    ThenInclude(m => m.Department).
+            AsNoTracking().
+            OrderBy(m => m.LastName).
+            ToListAsync();
 
-            if(id!=null)
+            if (id != null)
             {
                 ViewData["InstructorID"] = id.Value;
                 Instructor instructor = instructorViewModel.Instructors.Where(i => i.ID == id.Value).Single();
@@ -45,7 +45,7 @@ namespace ContosoUniversity.Controllers
 
             }
 
-            if(courseID !=null)
+            if (courseID != null)
             {
                 ViewData["CourseID"] = courseID.Value;
                 instructorViewModel.Enrollments = instructorViewModel.Courses.Where(s => s.CourseID == courseID).Single().Enrollments;
@@ -103,8 +103,8 @@ namespace ContosoUniversity.Controllers
                 return NotFound();
             }
 
-            var instructor = await _context.Instructors.Include(m => m.OfficeAssignment).Include(m=>m.CourseAssignments).
-                ThenInclude(c=>c.Course).FirstOrDefaultAsync(m => m.ID == id);
+            var instructor = await _context.Instructors.Include(m => m.OfficeAssignment).Include(m => m.CourseAssignments).
+                ThenInclude(c => c.Course).AsNoTracking().FirstOrDefaultAsync(m => m.ID == id);
 
             if (instructor == null)
             {
@@ -118,11 +118,11 @@ namespace ContosoUniversity.Controllers
         private void PopulateAssignedCourse(Instructor instructor)
         {
             var allCourses = _context.Courses;
-            var assignedCourses = new HashSet<int>(_context.CourseAssignments.Where(s => s.InstructorID == instructor.ID).Select(m => m.CourseID));
+            var assignedCourses = new HashSet<int>(instructor.CourseAssignments.Select(m => m.CourseID));
 
             var viewModel = new List<AssignedCourseData>();
 
-            foreach(var course in allCourses)
+            foreach (var course in allCourses)
             {
                 viewModel.Add(new AssignedCourseData
                 {
@@ -137,36 +137,30 @@ namespace ContosoUniversity.Controllers
         // POST: Instructor/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LastName,FirstMidName,HireTime")] Instructor instructor)
+        public async Task<IActionResult> EditPost(int? id)
         {
-            if (id != instructor.ID)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var instructorToChange = await _context.Instructors.Include(m=>m.OfficeAssignment).FirstOrDefaultAsync(m => m.ID == id);
+
+            if (await TryUpdateModelAsync<Instructor>(instructorToChange, "", m => m.FirstMidName, m => m.LastName, m => m.HireTime, m => m.OfficeAssignment))
             {
-                try
+                if (String.IsNullOrWhiteSpace(instructorToChange.OfficeAssignment?.Location))
                 {
-                    _context.Update(instructor);
-                    await _context.SaveChangesAsync();
+                    instructorToChange.OfficeAssignment = null;
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!InstructorExists(instructor.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(instructor);
+
+            return View(instructorToChange);
         }
 
         // GET: Instructor/Delete/5
