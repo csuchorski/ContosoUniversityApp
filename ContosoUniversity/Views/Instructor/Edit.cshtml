@@ -43,7 +43,7 @@
                             if (course.IsAssigned == true) isChecked = "checked";
                             <li>
                                 <label>@course.Title</label>
-                                <input type="checkbox" @isChecked>
+                                <input type="checkbox" name="selectedCourses" value="@course.CourseID"@isChecked>
                             </li>
                         }
                     }

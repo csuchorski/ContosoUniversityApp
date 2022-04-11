@@ -139,14 +139,15 @@ namespace ContosoUniversity.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPost(int? id)
+        public async Task<IActionResult> Edit(int? id, string[] SelectedCourses)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var instructorToChange = await _context.Instructors.Include(m=>m.OfficeAssignment).FirstOrDefaultAsync(m => m.ID == id);
+            var instructorToChange = await _context.Instructors.Include(m => m.OfficeAssignment).
+                Include(m => m.CourseAssignments).ThenInclude(m => m.Course).FirstOrDefaultAsync(m => m.ID == id);
 
             if (await TryUpdateModelAsync<Instructor>(instructorToChange, "", m => m.FirstMidName, m => m.LastName, m => m.HireTime, m => m.OfficeAssignment))
             {
@@ -161,6 +162,37 @@ namespace ContosoUniversity.Controllers
             }
 
             return View(instructorToChange);
+        }
+
+        public void ChangeInstructorCourses(string[] selectedCourses, Instructor instructorToChange)
+        {
+            if (selectedCourses == null)
+            {
+                instructorToChange.CourseAssignments = new List<CourseAssignment>();
+                return;
+            }
+
+            HashSet<string> selectedCoursesHS = new HashSet<string>(selectedCourses);
+            HashSet<int> instructorCoursesHS = new HashSet<int>(instructorToChange.CourseAssignments.Select(c => c.Course.CourseID));
+
+            foreach (var course in _context.Courses)
+            {
+                if (selectedCoursesHS.Contains(course.CourseID.ToString()))
+                {
+                    if (!instructorCoursesHS.Contains(course.CourseID))
+                    {
+                        instructorToChange.CourseAssignments.Add(new CourseAssignment { CourseID = course.CourseID, InstructorID = instructorToChange.ID });
+                    }
+                }
+                else
+                {
+                    if(instructorCoursesHS.Contains(course.CourseID))
+                    {
+                        CourseAssignment courseToRemove = instructorToChange.CourseAssignments.FirstOrDefault(m=>m.CourseID == course.CourseID);
+                        instructorToChange.CourseAssignments.Remove(courseToRemove);
+                    }
+                }
+            }
         }
 
         // GET: Instructor/Delete/5
