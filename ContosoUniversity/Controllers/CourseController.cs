@@ -48,7 +48,7 @@ namespace ContosoUniversity.Controllers
         // GET: Course/Create
         public IActionResult Create()
         {
-            ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "Name");
+            PopulateDropdownCourses();
             return View();
         }
 
@@ -65,8 +65,16 @@ namespace ContosoUniversity.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "Name", course.DepartmentID);
+            PopulateDropdownCourses(course.DepartmentID);
             return View(course);
+        }
+
+        public void PopulateDropdownCourses(object SelectedDepartment = null)
+        {
+            var DepartmentsSorted = from department in _context.Departments
+                                    orderby department.Name
+                                    select department;
+            ViewData["DepartmentID"] = new SelectList(DepartmentsSorted.AsNoTracking(), "DepartmentID", "Name", SelectedDepartment);
         }
 
         // GET: Course/Edit/5
@@ -82,7 +90,7 @@ namespace ContosoUniversity.Controllers
             {
                 return NotFound();
             }
-            ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "Name", course.DepartmentID);
+            PopulateDropdownCourses(course.DepartmentID);
             return View(course);
         }
 
@@ -118,7 +126,7 @@ namespace ContosoUniversity.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "Name", course.DepartmentID);
+            PopulateDropdownCourses(course.DepartmentID);
             return View(course);
         }
 
