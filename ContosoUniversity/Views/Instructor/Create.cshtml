@@ -28,6 +28,19 @@
                 <span asp-validation-for="HireTime" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="OfficeAssignment.Location" class="control-label"></label>
+                <input asp-for="OfficeAssignment.Location" class="form-control" />
+                 <span asp-validation-for="OfficeAssignment.Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <h2>Courses</h2>
+                @foreach(var course in ViewData["Courses"] as List<Course>)
+                {
+                    @course.Title
+                    <input type="checkbox" name="selectedCourses">
+                }
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
