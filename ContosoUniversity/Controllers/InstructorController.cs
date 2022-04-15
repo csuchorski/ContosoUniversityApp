@@ -213,7 +213,7 @@ namespace ContosoUniversity.Controllers
                 return NotFound();
             }
 
-            var instructor = await _context.Instructors
+            var instructor = await _context.Instructors.Include(i => i.CourseAssignments).ThenInclude(c => c.Course).Include(i => i.OfficeAssignment)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (instructor == null)
             {

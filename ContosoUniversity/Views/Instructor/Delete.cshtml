@@ -11,26 +11,59 @@
     <h4>Instructor</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.LastName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.LastName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FirstMidName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.FirstMidName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.HireTime)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.HireTime)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OfficeAssignment.Location)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OfficeAssignment.Location)
+        </dd>
     </dl>
-    
+    @if (Model.CourseAssignments != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Course ID</th>
+                    <th>Course Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var course in Model.CourseAssignments)
+                {
+                    <tr>
+                        <td>
+                            @course.CourseID
+                        </td>
+                        <td>
+                            @course.Course.Title
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+    }
+
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="ID" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
