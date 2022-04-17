@@ -64,7 +64,7 @@ namespace ContosoUniversity.Controllers
             }
 
             var instructor = await _context.Instructors.Include(i => i.CourseAssignments).ThenInclude(ca => ca.Course)
-                .FirstOrDefaultAsync(m => m.ID == id);
+                .AsNoTracking().FirstOrDefaultAsync(m => m.ID == id);
             if (instructor == null)
             {
                 return NotFound();
@@ -147,7 +147,7 @@ namespace ContosoUniversity.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, string[] selectedCourses)
+        public async Task<IActionResult> Edit(int? id, string[] selectedCourses, byte [] rowVersion)
         {
             if (id == null)
             {
@@ -156,6 +156,14 @@ namespace ContosoUniversity.Controllers
 
             var instructorToChange = await _context.Instructors.Include(m => m.OfficeAssignment).
                 Include(m => m.CourseAssignments).ThenInclude(m => m.Course).FirstOrDefaultAsync(m => m.ID == id);
+
+            if(instructorToChange == null)
+            {
+                instructorToChange = new Instructor();
+                await TryUpdateModelAsync(instructorToChange);
+                ModelState.AddModelError(String.Empty, "Instructor deleted by another user");
+                return View(instructorToChange);
+            }
 
             if (await TryUpdateModelAsync<Instructor>(instructorToChange, "", m => m.FirstMidName, m => m.LastName, m => m.HireTime, m => m.OfficeAssignment))
             {
